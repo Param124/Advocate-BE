@@ -1,0 +1,12 @@
+package com.exam.Repo;
+
+import org.springframework.data.jpa.repository.*;
+
+import com.exam.models.*;
+
+public interface UserRepository extends JpaRepository<User,Long>{
+public User findByUsername(String username);
+
+@Query(value="select u from user u where username=?1 and password=?2",nativeQuery=true)
+public User findUserByUsernameAndPassword(String username,String Password);
+}

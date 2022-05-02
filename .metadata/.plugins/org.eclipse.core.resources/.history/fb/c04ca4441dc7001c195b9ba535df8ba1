@@ -1,0 +1,17 @@
+package com.exam.Repo;
+
+import org.springframework.data.jpa.repository.*;
+
+import com.exam.BALModel.UserBALModel;
+import com.exam.models.*;
+
+public interface UserRepository extends JpaRepository<User,Long>{
+public User findByUsername(String username);
+
+@Query(value="select * from users u where u.username=?1 and u.password=?2",nativeQuery=true)
+public User findUserByUsernameAndPassword(String username,String Password);
+
+@Query(value="select * from users usr join user_role u_rl on usr.id = u_rl.user_id join role lr on u_rl. role_role_id = lr.role_id where usr.username=?1;",nativeQuery=true)
+public UserBALModel findUserWithRole(String username);
+
+}

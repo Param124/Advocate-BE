@@ -1,0 +1,53 @@
+package com.exam.Services.impl;
+
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.exam.Repo.RoleRepository;
+import com.exam.Repo.UserRepository;
+import com.exam.Services.UserService;
+import com.exam.models.User;
+import com.exam.models.UserRole;
+
+@Service
+public class UserServiceImpl implements UserService{
+	@Autowired
+private UserRepository userRepository;
+	@Autowired
+private RoleRepository roleRepository;
+	
+	@Override
+	public User createUser(User user, Set<UserRole> userRole) {
+		var local=this.userRepository.findByUsername(user.getUsername());
+		if(local!=null)
+			System.out.print("User already exist");
+		for(UserRole ur:userRole)
+		{
+			roleRepository.save(ur.getRole());
+		}
+		user.getUserRoles().addAll(userRole);
+		local=this.userRepository.save(user);
+		return null;
+	}
+
+	@Override
+	public User getUser(String userName) {
+		var local=this.userRepository.findByUsername(userName);
+		return local;
+	}
+
+	@Override
+	public void deleteUser(Long id) {
+		this.userRepository.deleteById(id);
+		
+	}
+
+	@Override
+	public String findUserByUsernameAndPassword(String UserName, String Password) {
+		// TODO Auto-generated method stub
+		return this.userRepository.findUserByUsernameAndPassword(UserName, Password);
+	}
+
+}
